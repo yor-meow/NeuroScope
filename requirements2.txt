@@ -1,0 +1,7 @@
+streamlit
+nibabel
+numpy
+plotly
+pandas
+scikit-image
+pytest
