@@ -34,7 +34,10 @@ data = None
 spacing = None
 
 if uploaded_file is not None:
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".nii.gz") as tmp_file:
+    # Dynamically match suffix to uploaded file type to prevent gzip loading errors
+    file_suffix = ".nii.gz" if uploaded_file.name.endswith(".gz") else ".nii"
+    
+    with tempfile.NamedTemporaryFile(delete=False, suffix=file_suffix) as tmp_file:
         tmp_file.write(uploaded_file.getvalue())
         tmp_path = tmp_file.name
     try:
@@ -150,7 +153,7 @@ if data is not None and spacing is not None:
 
             csv_data = df.to_csv(index=False).encode('utf-8')
             st.download_button(
-                label="📥 Export Experiment Data as CSV",
+                label="Export Experiment Data as CSV",
                 data=csv_data,
                 file_name="neuroscope_sensitivity_analysis.csv",
                 mime="text/csv"
